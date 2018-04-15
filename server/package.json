@@ -1,0 +1,33 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "my main web station",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "supervisor ./bin/www.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/eminoda/NextInnovation.git"
+  },
+  "keywords": [
+    "koa",
+    "blog"
+  ],
+  "author": "eminoda",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eminoda/NextInnovation/issues"
+  },
+  "homepage": "https://github.com/eminoda/NextInnovation#readme",
+  "dependencies": {
+    "koa": "^2.5.0",
+    "koa-router": "^7.4.0",
+    "markdown": "^0.5.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-zip": "^4.1.0"
+  }
+}
