@@ -1,15 +1,20 @@
 const Router = require('koa-router');
 const router = new Router();
-const fs = require('fs');
 const markdown = require('markdown').markdown;
-
+const fs = require('fs');
+const utilService = require('../services/utilService');
 router.prefix('/blog');
 
-router.get('/', (ctx, next) => {
+router.get('/:markdownName', async (ctx, next) => {
+    const markdownName = ctx.params.markdownName;
     try {
-        ctx.body = markdown.toHTML(fs.readFileSync('./blogs/nextInnovation.md', {
+        ctx.state.tdk = utilService.buildTdk(markdownName);
+        const content = await markdown.toHTML(fs.readFileSync(`./blogs/${markdownName}.md`, {
             encoding: 'utf-8'
         }));
+        await ctx.render('blog', {
+            content: content
+        });
     } catch (err) {
         console.log(err);
     }
