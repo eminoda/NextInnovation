@@ -3,7 +3,11 @@
 
 ## TODO LIST
 | 2018-4-15 23:26:30
-- [] gulp构建markdown文件，不要server解析
+- [*] gulp构建markdown文件，不要server解析
 - [] markdown在线编译、预览，不然每次发布就会很二
 - [] 接口自动执行gulp task，供在线编译
 - [] blog文件日期归类等操作
+
+| 2018-4-16 23:21:56
+- [] gulp 运行机制
+- [] gulp 中through2、glob等插件运行原理
