@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "supervisor ./bin/www.js"
+    "start": "nodemon -e js,md,html --delay 100ms --ignore ./node_modules ./bin/www.js"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,7 @@
     "koa": "^2.5.0",
     "koa-nunjucks-2": "^3.0.2",
     "koa-router": "^7.4.0",
+    "koa-static": "^4.0.2",
     "markdown": "^0.5.0"
   },
   "devDependencies": {
