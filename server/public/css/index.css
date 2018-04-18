@@ -1,0 +1,18 @@
+button span.menu-icon {
+    color: #fff;
+}
+
+.jumbotron {
+    background: -webkit-linear-gradient(45deg, #3174D4 0, #958CD0 100%);
+    padding-top: 60px;
+    color: #fff;
+}
+
+html body {
+    font-family: YouYuan;
+}
+
+.img-rounded {
+    width: 40%;
+    height: auto;
+}
