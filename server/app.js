@@ -6,6 +6,7 @@ const path = require('path');
 // router
 const blogRouter = require('./router/blogRouter');
 const indexRouter = require('./router/indexRouter');
+const oauthRouter = require('./router/oauthRouter');
 
 // middleware
 app.use(serve(__dirname + '/public'));
@@ -19,6 +20,7 @@ app.use(koaNunjucks({
 // router register
 app.use(indexRouter.routes()).use(indexRouter.allowedMethods());
 app.use(blogRouter.routes()).use(blogRouter.allowedMethods());
+app.use(oauthRouter.routes()).use(oauthRouter.allowedMethods());
 
 app.use(async ctx => {
     ctx.body = 'Hello World';
