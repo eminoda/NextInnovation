@@ -2,4 +2,4 @@
 /server/dist
 server/npm-debug.log
 server/mongo.conf.js
-server/log/*.log
+server/log/*.log*
