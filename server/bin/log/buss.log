@@ -1,0 +1,27 @@
+[2018-06-16T22:27:08.324] [DEBUG] mongoService - 创建连接... at connect (mongoService.js:20:16)
+[2018-06-16T22:27:08.546] [DEBUG] app - 连接成功 at mongoService.connect.then.data (..\bin\www.js:8:12)
+[2018-06-16T22:27:55.073] [DEBUG] httpService - { url: 'https://github.com/login/oauth/access_token',
+  method: 'POST',
+  form: 
+   { client_id: '16814dd692fa1ee336e2',
+     client_secret: '9331184f7ce3efc8435e909b172ab2e9db16f0a3',
+     code: 'b3e632a1361023e28d59',
+     redirect_uri: 'http://localhost:3000/oauth/authorize',
+     state: '123456' } } 'at request (httpService.js:9:12)'
+[2018-06-16T22:27:57.019] [DEBUG] httpService - access_token=2452497ea77fe7aa684c8aab00caa179347a0a83&scope=&token_type=bearer at _callback (httpService.js:17:28)
+[2018-06-16T22:27:57.019] [DEBUG] httpService - { headers: 
+   { 'User-Agent': 'my node',
+     Authorization: 'token 2452497ea77fe7aa684c8aab00caa179347a0a83' },
+  url: 'https://api.github.com/user',
+  qr: { access_token: '2452497ea77fe7aa684c8aab00caa179347a0a83' } } 'at request (httpService.js:9:12)'
+[2018-06-16T22:27:58.259] [DEBUG] httpService - {"login":"eminoda","id":15711478,"node_id":"MDQ6VXNlcjE1NzExNDc4","avatar_url":"https://avatars3.githubusercontent.com/u/15711478?v=4","gravatar_id":"","url":"https://api.github.com/users/eminoda","html_url":"https://github.com/eminoda","followers_url":"https://api.github.com/users/eminoda/followers","following_url":"https://api.github.com/users/eminoda/following{/other_user}","gists_url":"https://api.github.com/users/eminoda/gists{/gist_id}","starred_url":"https://api.github.com/users/eminoda/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/eminoda/subscriptions","organizations_url":"https://api.github.com/users/eminoda/orgs","repos_url":"https://api.github.com/users/eminoda/repos","events_url":"https://api.github.com/users/eminoda/events{/privacy}","received_events_url":"https://api.github.com/users/eminoda/received_events","type":"User","site_admin":false,"name":null,"company":null,"blog":"","location":null,"email":null,"hireable":null,"bio":null,"public_repos":21,"public_gists":0,"followers":1,"following":0,"created_at":"2015-11-08T04:30:28Z","updated_at":"2018-04-28T05:11:44Z"} at _callback (httpService.js:17:28)
+[2018-06-16T22:29:17.487] [DEBUG] mongoService - 创建连接... at connect (mongoService.js:20:16)
+[2018-06-16T22:29:17.705] [DEBUG] app - 连接成功 at mongoService.connect.then.data (..\bin\www.js:8:12)
+[2018-06-16T22:29:23.298] [DEBUG] httpService - { url: 'https://github.com/login/oauth/access_token',
+  method: 'POST',
+  form: 
+   { client_id: '16814dd692fa1ee336e2',
+     client_secret: '9331184f7ce3efc8435e909b172ab2e9db16f0a3',
+     code: '9e83d40a14c41d8d2b4f',
+     redirect_uri: 'http://localhost:3000/oauth/authorize',
+     state: '123456' } } 'at request (httpService.js:9:12)'
