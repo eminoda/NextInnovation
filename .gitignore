@@ -3,3 +3,6 @@
 server/npm-debug.log
 server/mongo.conf.js
 server/log/*.log*
+/server/conf/mongo.conf.js
+/server/conf/github.conf.js
+/log
