@@ -97,7 +97,7 @@ describe('Test mongo', () => {
     })
     test('user >> deleteUser', () => {
         const query = {
-            name: 'test7'
+            name: 'test2'
         }
         expect.assertions(1);
         return userService.deleteUser(query).then(data => {

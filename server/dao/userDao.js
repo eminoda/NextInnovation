@@ -23,8 +23,8 @@ const userDao = {
     deleteOne: function (query) {
         return userModel.deleteOne(query);
     },
-    deteteMany: function (query) {
-        return userModel.deteteMany(query);
+    deleteMany: function (query) {
+        return userModel.deleteMany(query);
     }
 }
 module.exports = userDao;
