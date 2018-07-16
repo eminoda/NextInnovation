@@ -4,6 +4,7 @@ const logger = require('../service/loggerService')('oauthRouter');
 const githubConf = require('../conf/github.conf');
 const userService = require('../service/userService');
 const oauthService = require('../service/oauthService');
+const jwt = require('jsonwebtoken');
 router.prefix('/oauth');
 
 // 开始授权
@@ -12,8 +13,10 @@ router.get('/', async (ctx, next) => {
     let redirect_uri = githubConf.redirect_uri;
     let state = 123456; //TODO 加密
     // 通过github，重定向到指定路径
-    let third_redirect_uri = '?backUrl=http://www.baidu.com';
-    ctx.redirect(`https://github.com/login/oauth/authorize?client_id=${client_id}&state=${state}&redirect_uri=${redirect_uri}` + third_redirect_uri);
+    console.log(ctx.query.backUrl || ctx.query.backurl);
+    let third_redirect_uri = '?backUrl=' + githubConf.blog_uri + jwt.decode(decodeURIComponent(ctx.query.backUrl || ctx.query.backurl), 'hexo');
+    console.log(third_redirect_uri);
+    ctx.redirect(`https://github.com/login/oauth/authorize?client_id=${client_id}&state=${state}&redirect_uri=${redirect_uri}${third_redirect_uri}`);
 })
 
 // 
