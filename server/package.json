@@ -23,11 +23,8 @@
   "homepage": "https://github.com/eminoda/NextInnovation#readme",
   "dependencies": {
     "bluebird": "^3.5.1",
-<<<<<<< HEAD
     "cheerio": "^1.0.0-rc.2",
-=======
     "jsonwebtoken": "^8.3.0",
->>>>>>> 3c72644fd610ac7a3f45681d897968a24db9b176
     "koa": "^2.5.0",
     "koa-nunjucks-2": "^3.0.2",
     "koa-router": "^7.4.0",
