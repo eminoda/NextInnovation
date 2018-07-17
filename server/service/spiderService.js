@@ -14,7 +14,7 @@ module.exports = {
                 .end((err, res) => {
                     if (!err) {
                         const $ = cheerio.load(res.text);
-                        const $selector = $('table tr td[width="540"][valign="top"] div[style="width:520px;"]');
+                        const $selector = $('table tr td[width="540"][valign="top"] div[align="center"]');
                         let detailImageUrls;
                         detailImageUrls = getBookDetailImage($selector);
                         resolve(detailImageUrls);
@@ -38,10 +38,10 @@ module.exports = {
                         const $ = cheerio.load(res.text);
                         const $hrefSelector = $('table.tbc tr td[align="left"] p[align="center"]');
                         let books = [];
-                        books = _getBookHrefAndName($hrefSelector, books);
+                        books = getBookHrefAndName($hrefSelector, books);
 
                         const $imageSelector = $('table.tbc tr td[width="120"][align="center"] div');
-                        books = _getBookImage($imageSelector, books);
+                        books = getBookImage($imageSelector, books);
 
                         const $ageSelector = $('table.tbc tr td[align="left"] div[align="left"]');
                         books = _getBookDesc($ageSelector, books);
@@ -82,7 +82,7 @@ function _findNodesByName(nodes, targetName) {
     return result;
 }
 
-function _getBookHrefAndName($selector, books) {
+function getBookHrefAndName($selector, books) {
     for (let i = 0; i < $selector.length; i++) {
         books[i] = books[i] || {};
         books[i].href = "http://www.997788.com" + _findNodeByName($selector[i].children, 'a').attribs.href;
@@ -91,7 +91,7 @@ function _getBookHrefAndName($selector, books) {
     return books;
 }
 
-function _getBookImage($selector, books) {
+function getBookImage($selector, books) {
     for (let i = 0; i < $selector.length; i++) {
         books[i] = books[i] || {};
         books[i].imageUrl = _findNodeByName($selector[i].children, 'img').attribs.src;
@@ -114,7 +114,7 @@ function _getBookDesc($selector, books) {
  * </div>
  */
 function getBookDetailImage($selector) {
-    let images = _findNodesByName($selector[0].children, 'img');
+    let images = _findNodesByName($selector[1].children, 'img');
     let bookDetailImages = [];
     for (let i = 0; i < images.length; i++) {
         bookDetailImages.push(images[i].attribs.src);

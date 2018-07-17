@@ -21,11 +21,12 @@ router.get('/add/books/:page', async (ctx) => {
 })
 
 router.get('/add/bookDetail', async (ctx) => {
-    // let book = await bookService.findBookById();
+    let id = '17ae3d00-89de-11e8-8e97-3131e50ef046';
+    let book = await bookService.findBookById(id);
     let detailImageUrls = await spiderService.getBookDetail({
-        page: 'http://www.997788.com/5709/auction_102_17680840.html'
+        page: book.href
     });
-    let result = await bookService.updateBookById('http://www.997788.com/5709/auction_102_17680840.html', {
+    let result = await bookService.updateBookById(id, {
         detailImageUrls: detailImageUrls
     })
     ctx.body = {

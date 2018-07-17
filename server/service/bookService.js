@@ -19,7 +19,7 @@ const bookService = {
     },
     updateBookById: function (id, book) {
         return bookDao.update({
-            href: id
+            id: id
         }, book);
     }
 }
