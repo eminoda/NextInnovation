@@ -8,8 +8,7 @@ const pageUrl = 'http://www.997788.com/5709/all_0/?shop_id=5709&t2=0&t4=0&t5=2&t
 module.exports = {
     getBookBasicInfo: function () {
         return new Promise((resolve, reject) => {
-            spider
-                .get(pageUrl)
+            spider.get(pageUrl)
                 .charset('gbk')
                 .end((err, res) => {
                     if (!err) {
@@ -25,7 +24,11 @@ module.exports = {
                         books = _getBookAge($ageSelector, books);
 
                         // logger.info(books);
-                        return bookService.saveBook(books);
+                        bookService.saveBook(books).then(data => {
+                            resolve(data);
+                        }).catch(err => {
+                            reject(err);
+                        })
                     } else {
                         logger.error(err);
                         reject(err);
