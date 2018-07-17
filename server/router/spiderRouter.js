@@ -5,8 +5,9 @@ const Router = require('koa-router');
 const router = new Router();
 router.prefix('/spider');
 
-router.get('/add/books', async (ctx) => {
-    let books = await spiderService.getBookBasicInfo() || [];
+router.get('/add/books/:page', async (ctx) => {
+    let page = ctx.params.page;
+    let books = await spiderService.getBookBasicInfo(page) || [];
     for (let book of books) {
         let result = await bookService.findBookByName(book.name);
         // 添加不存在书籍
@@ -19,11 +20,13 @@ router.get('/add/books', async (ctx) => {
     }
 })
 
-router.get('/query/books', async (ctx) => {
-    let result = await bookService.findBooks({});
+router.get('/add/bookDetail', async (ctx) => {
+    let book = await spiderService.getBookDetail({
+        page: 'http://www.997788.com/5709/auction_102_17680840.html'
+    });
     ctx.body = {
         success: true,
-        data: result
+        book: book
     }
 })
 module.exports = router;

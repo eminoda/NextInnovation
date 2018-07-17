@@ -5,8 +5,12 @@ const router = new Router();
 router.prefix('/book');
 
 router.get('/list', async (ctx) => {
-    let query = ctx.query;
-    let result = await bookService.findBooks(query);
+    let age = ctx.query.age;
+    let result = await bookService.findBooks({
+        age: {
+            $regex: age
+        }
+    });
     ctx.body = {
         success: true,
         data: result
