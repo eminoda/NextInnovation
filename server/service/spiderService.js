@@ -22,13 +22,8 @@ module.exports = {
 
                         const $ageSelector = $('table.tbc tr td[align="left"] div[align="left"]');
                         books = _getBookAge($ageSelector, books);
-
-                        // logger.info(books);
-                        bookService.saveBook(books).then(data => {
-                            resolve(data);
-                        }).catch(err => {
-                            reject(err);
-                        })
+                        logger.debug(books);
+                        resolve(books);
                     } else {
                         logger.error(err);
                         reject(err);
