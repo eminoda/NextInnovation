@@ -21,12 +21,16 @@ router.get('/add/books/:page', async (ctx) => {
 })
 
 router.get('/add/bookDetail', async (ctx) => {
-    let book = await spiderService.getBookDetail({
+    // let book = await bookService.findBookById();
+    let detailImageUrls = await spiderService.getBookDetail({
         page: 'http://www.997788.com/5709/auction_102_17680840.html'
     });
+    let result = await bookService.updateBookById('http://www.997788.com/5709/auction_102_17680840.html', {
+        detailImageUrls: detailImageUrls
+    })
     ctx.body = {
         success: true,
-        book: book
+        book: result
     }
 })
 module.exports = router;

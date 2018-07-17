@@ -4,6 +4,11 @@ const bookService = {
     saveBook: function (book) {
         return bookDao.insert(book);
     },
+    findBookById: function (id) {
+        return bookDao.findOne({
+            id: id
+        })
+    },
     findBookByName: function (name) {
         return bookDao.findOne({
             name: name
@@ -11,6 +16,11 @@ const bookService = {
     },
     findBooks: function (query) {
         return bookDao.find(query)
+    },
+    updateBookById: function (id, book) {
+        return bookDao.update({
+            href: id
+        }, book);
     }
 }
 module.exports = bookService;

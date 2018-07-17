@@ -14,11 +14,10 @@ module.exports = {
                 .end((err, res) => {
                     if (!err) {
                         const $ = cheerio.load(res.text);
-                        const $hrefSelector = $('table tr td[width="540"][valign="top"] div[style="width:520px;"]');
-                        let book = {};
-                        book = _getBookDetailImage($hrefSelector, book);
-
-                        resolve(book);
+                        const $selector = $('table tr td[width="540"][valign="top"] div[style="width:520px;"]');
+                        let detailImageUrls;
+                        detailImageUrls = getBookDetailImage($selector);
+                        resolve(detailImageUrls);
                     } else {
                         reject(err);
                     }
@@ -57,6 +56,7 @@ module.exports = {
     }
 }
 
+// 匹配标签查询节点
 function _findNodeByName(children, targetName) {
     let result;
     for (let i = 0; i < children.length; i++) {
@@ -70,6 +70,16 @@ function _findNodeByName(children, targetName) {
             return result;
         }
     }
+}
+
+function _findNodesByName(nodes, targetName) {
+    let result = [];
+    for (let i = 0; i < nodes.length; i++) {
+        if (nodes[i].name == targetName) {
+            result.push(nodes[i]);
+        }
+    }
+    return result;
 }
 
 function _getBookHrefAndName($selector, books) {
@@ -98,9 +108,16 @@ function _getBookDesc($selector, books) {
     return books;
 }
 
-function _getBookDetailImage($selector, book) {
-    for (let i = 0; i < $selector.length; i++) {
-        book.detailImage = _findNodeByName($selector[i].children, 'img').attribs.src;
+/****
+ * <div>
+ *      <img>
+ * </div>
+ */
+function getBookDetailImage($selector) {
+    let images = _findNodesByName($selector[0].children, 'img');
+    let bookDetailImages = [];
+    for (let i = 0; i < images.length; i++) {
+        bookDetailImages.push(images[i].attribs.src);
     }
-    return book;
+    return bookDetailImages;
 }
