@@ -6,11 +6,12 @@ router.prefix('/book');
 
 router.get('/list', async (ctx) => {
     let age = ctx.query.age;
+
     let result = await bookService.findBooks({
         age: {
             $regex: age
         }
-    });
+    }).count();
     ctx.body = {
         success: true,
         data: result

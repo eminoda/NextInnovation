@@ -74,6 +74,25 @@ router.get('/add/bookDetail', async (ctx) => {
     }
 })
 
+router.get('/add/book/:id', async (ctx) => {
+    let id = ctx.params.id;
+    let book = await bookService.findBookById(id);
+    logger.debug(book);
+    let result;
+    if (book.detailImageUrls && book.detailImageUrls.length == 0) {
+        let detailImageUrls = await spiderService.getBookDetail({
+            page: book.href
+        });
+        result = await bookService.updateBookById(book.id, {
+            detailImageUrls: detailImageUrls
+        })
+    }
+    ctx.body = {
+        success: true,
+        data: result
+    }
+})
+
 function cookieToStr(cookies) {
     let cookieStr = '';
     for (let i = 0; i < cookies.length; i++) {

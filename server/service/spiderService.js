@@ -61,9 +61,13 @@ module.exports = {
                 .end((err, res) => {
                     if (!err) {
                         const $ = cheerio.load(res.text);
-                        const $selector = $('table tr td[width="540"][valign="top"] div[align="center"]');
+                        let $selector = $('table tr td[width="540"][valign="top"] div[align="center"]');
                         let detailImageUrls;
-                        detailImageUrls = getBookDetailImage($selector);
+                        detailImageUrls = getBookDetailImage($selector[1].children);
+                        if (detailImageUrls.length == 0) {
+                            $selector = $('table tr td[width="540"][valign="top"] div#imgLarge[align="center"]');
+                            detailImageUrls = getBookDetailImage2($selector[0].children);
+                        }
                         resolve(detailImageUrls);
                     } else {
                         reject(err);
@@ -161,10 +165,24 @@ function _getBookDesc($selector, books) {
  * </div>
  */
 function getBookDetailImage($selector) {
-    let images = _findNodesByName($selector[1].children, 'img');
+    let images = _findNodesByName($selector, 'img');
     let bookDetailImages = [];
     for (let i = 0; i < images.length; i++) {
         bookDetailImages.push(images[i].attribs.src);
+    }
+    return bookDetailImages;
+}
+
+function getBookDetailImage2(list) {
+    let bookDetailImages = [];
+    for (let i = 0; i < list.length; i++) {
+        let $selector = list[i];
+        if ($selector.children) {
+            image = _findNodeByName($selector.children, 'img');
+            if (image) {
+                bookDetailImages.push(image.attribs.src);
+            }
+        }
     }
     return bookDetailImages;
 }
