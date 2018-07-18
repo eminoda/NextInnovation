@@ -51,4 +51,3 @@ function _findNodeByName(children, targetName) {
     }
 }
 ````
-

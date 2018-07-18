@@ -21,6 +21,9 @@ const bookService = {
         return bookDao.update({
             id: id
         }, book);
+    },
+    deleteBooks: function () {
+        return bookDao.deleteMany();
     }
 }
 module.exports = bookService;

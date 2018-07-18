@@ -3,10 +3,57 @@ const Promise = require('bluebird');
 const cheerio = require('cheerio');
 const spider = require('superagent');
 require('superagent-charset')(spider);
-const bookService = require('./bookService');
-const pageUrl = 'http://www.997788.com/5709/all_0/?shop_id=5709&t2=0&t4=0&t5=2&t6=&t7=0&t8=0&t9=0&t10=&page=2';
 
 module.exports = {
+    login: function (pageUrl) {
+        return new Promise((resolve, reject) => {
+            spider.post(pageUrl)
+                .type('form')
+                .send('name=spider1234')
+                .send('pwd_=spider12345')
+                .send('pwd2=27080d56a6488e00a265e83897b4788c')
+                .send('pwd3=9a8dcb1ce462f6474d18a9313ce34410')
+                .send('pwd4=a52c5955ff01fb644149f11c2c710496')
+                .send('pwd5=%0D%0A41bebf9236be0043ef77b9f8f48a161c')
+                .send('pwd=e3eea312c1491a029b2eec5c245ef4c4')
+                .send('s_name=%C9%CF%BA%A3%BE%C9%CA%E9%B5%EA')
+                .send('path_info=%2F5709%2Fall_3_102_5330%2F%3Fshop_id%3D5709%26d%3D102%26r%3D%26v1%3D%26v2%3D%26v3%3D%26v4%3D%26v5%3D%26v6%3D%26v7%3D%26v8%3D%26v9%3D%26v10%3D%26v11%3D%26v12%3D%26s0%3D%26s1%3D%26s2%3D%26s3%3D%26s4%3D%26s5%3D%26s6%3D%26s7%3D%26s8%3D%26s9%3D%26s10%3D%26s11%3D%26s12%3D%26s13%3D%26s14%3D%26s15%3D%26t2%3D0%26t4%3D0%26t5%3D2%26t6%3D%26t7%3D0%26t8%3D0%26t9%3D%26t10%3D%26z%3D0%26p%3D0%26v%3D0%26u%3D1%26y%3D2%26o%3Do%26s%3D5330%26ids%3D76221864%26ide%3D76048392%26jis%3D77%26jie%3D299%26page%3D5%26ne%3D1')
+                .set('Cookie', 'PHPSESSID=3brt8gc52tnunk9esb7s6o9ua0')
+                .charset('gbk')
+                .end((err, res) => {
+                    if (!err) {
+                        logger.info(res.header['set-cookie']);
+                        resolve(res.header['set-cookie']);
+                    } else {
+                        reject(err);
+                    }
+                })
+        })
+    },
+    getNextPage: function (pageUrl, cookies) {
+        return new Promise((resolve, reject) => {
+            spider.get(pageUrl)
+                .charset('gbk')
+                .set('Cookie', cookies)
+                .end((err, res) => {
+                    try {
+                        if (!err) {
+                            const $ = cheerio.load(res.text);
+                            const $selector = $('div#showpage table td');
+                            const hrefList = _findNodesByName($selector[0].children, 'a');
+                            pageUrl = hrefList.length > 2 ? hrefList[2] : hrefList[0];
+                            pageUrl = getPageUrl(pageUrl);
+                            resolve(pageUrl);
+                        } else {
+                            reject(err);
+                        }
+                    } catch (err) {
+                        reject(err);
+
+                    }
+                })
+        })
+    },
     getBookDetail: function (options) {
         return new Promise((resolve, reject) => {
             spider.get(options.page)
@@ -24,14 +71,10 @@ module.exports = {
                 })
         })
     },
-    getBookBasicInfo: function (page) {
-        let pageUrl = "http://www.997788.com/5709/all_3_102_5328/?shop_id=5709&d=102&r=&v1=&v2=&v3=&v4=&v5=&v6=&v7=&v8=&v9=&v10=&v11=&v12=&s0=&s1=&s2=&s3=&s4=&s5=&s6=&s7=&s8=&s9=&s10=&s11=&s12=&s13=&s14=&s15=&t2=0&t4=0&t5=2&t6=&t7=0&t8=0&t9=&t10=&z=0&p=0&v=0&u=1&y=2&o=o&s=5328&ids=76341862&ide=76190694&jis=499&jie=29&ne=1";
-        page = page || 1;
-        pageUrl = pageUrl + '&page=' + page;
-        logger.debug('page:' + page);
-        logger.debug('pageUrl:' + pageUrl);
+    getBookBasicInfo: function (pageUrl, cookies) {
         return new Promise((resolve, reject) => {
             spider.get(pageUrl)
+                .set('Cookie', cookies)
                 .charset('gbk')
                 .end((err, res) => {
                     if (!err) {
@@ -45,7 +88,7 @@ module.exports = {
 
                         const $ageSelector = $('table.tbc tr td[align="left"] div[align="left"]');
                         books = _getBookDesc($ageSelector, books);
-                        logger.debug(books);
+                        // logger.debug(books);
                         resolve(books);
                     } else {
                         logger.error(err);
@@ -56,6 +99,10 @@ module.exports = {
     }
 }
 
+function getPageUrl($selector) {
+    var tempHref = $selector.attribs.onclick.split("this.href='?")[1];
+    return tempHref.slice(0, tempHref.length - 1);
+}
 // 匹配标签查询节点
 function _findNodeByName(children, targetName) {
     let result;

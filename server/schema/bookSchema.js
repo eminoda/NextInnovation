@@ -9,7 +9,8 @@ module.exports = new mongoose.Schema({
     age: String,
     href: String,
     imageUrl: String, //标题图片
-    detailImageUrls: []
+    detailImageUrls: [], //详情图片
+    desc: String //描述
 }, {
     collection: 'book',
     id: true
