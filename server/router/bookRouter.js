@@ -11,6 +11,7 @@ router.prefix('/book');
  * pageSize
  */
 router.get('/list', async (ctx) => {
+    logger.info(ctx.query);
     let page = ctx.query.page || 1;
     let pageSize = ctx.query.pageSize || 10;
     let age = ctx.query.age;
@@ -19,15 +20,18 @@ router.get('/list', async (ctx) => {
             $regex: age
         }
     } : {}
-
-    let totalCount = await bookService.findBooks(query).count();
-    let books = await bookService.findBooks(query).skip(page * pageSize).limit(pageSize);
-    ctx.body = {
-        success: true,
-        books: books,
-        totalCount: totalCount,
-        page: page,
-        pageSize: pageSize
+    try {
+        let totalCount = await bookService.findBooks(query).count();
+        let books = await bookService.findBooks(query).skip((page - 1) * pageSize).limit(Number(pageSize));
+        ctx.body = {
+            success: true,
+            books: books,
+            totalCount: totalCount,
+            page: page,
+            pageSize: pageSize
+        }
+    } catch (err) {
+        next(err)
     }
 })
 
