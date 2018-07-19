@@ -3,6 +3,7 @@ const app = new Koa();
 const serve = require('koa-static');
 const koaNunjucks = require('koa-nunjucks-2');
 const path = require('path');
+const logger = require('./service/loggerService')('app');
 // router
 const blogRouter = require('./router/blogRouter');
 const indexRouter = require('./router/indexRouter');
@@ -19,6 +20,21 @@ app.use(koaNunjucks({
         trimBlocks: true
     }
 }));
+// hander error page
+app.use(async (ctx, next) => {
+    try {
+        await next();
+        // 接口请求
+        if (ctx.header && ctx.header['content-type'] == 'application/json') {}
+    } catch (err) {
+        log.error(err);
+        ctx.state.err = err;
+        ctx.body = {
+            success: false,
+            err: err
+        }
+    }
+})
 // router register
 app.use(indexRouter.routes()).use(indexRouter.allowedMethods());
 app.use(blogRouter.routes()).use(blogRouter.allowedMethods());
@@ -26,8 +42,9 @@ app.use(oauthRouter.routes()).use(oauthRouter.allowedMethods());
 app.use(spiderRouter.routes()).use(spiderRouter.allowedMethods());
 app.use(bookRouter.routes()).use(bookRouter.allowedMethods());
 
-app.use(async ctx => {
-    ctx.body = 'Hello World';
+// error-handling
+app.on('error', (err, ctx) => {
+    log.error(err);
 });
 
 module.exports = app;

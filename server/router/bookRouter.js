@@ -31,7 +31,10 @@ router.get('/list', async (ctx) => {
             pageSize: pageSize
         }
     } catch (err) {
-        next(err)
+        ctx.body = {
+            success: false,
+            err: err.message
+        }
     }
 })
 /**
@@ -39,10 +42,17 @@ router.get('/list', async (ctx) => {
  * id
  */
 router.get('/detail/:id', async (ctx) => {
-    let book = await bookService.findBookById(ctx.params.id);
-    ctx.body = {
-        success: true,
-        book: book
+    try {
+        let book = await bookService.findBookById(ctx.params.id);
+        ctx.body = {
+            success: true,
+            book: book
+        }
+    } catch (err) {
+        ctx.body = {
+            success: false,
+            err: err.message
+        }
     }
 })
 
@@ -55,14 +65,30 @@ router.get('/vagueList', async (ctx) => {
             $regex: name
         }
     }
-    let totalCount = await bookService.findBooks(query).count();
-    let books = await bookService.findBooks(query).skip((page - 1) * pageSize).limit(Number(pageSize));
-    ctx.body = {
-        success: true,
-        books: books,
-        totalCount: totalCount,
-        page: page,
-        pageSize: pageSize
+    try {
+        let totalCount = await bookService.findBooks(query).count();
+        let books = await bookService.findBooks(query).skip((page - 1) * pageSize).limit(Number(pageSize));
+        ctx.body = {
+            success: true,
+            books: books,
+            totalCount: totalCount,
+            page: page,
+            pageSize: pageSize
+        }
+    } catch (err) {
+        ctx.body = {
+            success: false,
+            err: err.message
+        }
     }
 })
+
+router.get('/test', async (ctx) => {
+    ctx.body = {
+        success: false,
+        data: '22'
+    }
+})
+
+
 module.exports = router;
