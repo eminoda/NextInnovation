@@ -42,6 +42,7 @@ router.get('/list', async (ctx) => {
  * id
  */
 router.get('/detail/:id', async (ctx) => {
+    logger.info(ctx.query);
     try {
         let book = await bookService.findBookById(ctx.params.id);
         ctx.body = {
@@ -57,6 +58,7 @@ router.get('/detail/:id', async (ctx) => {
 })
 
 router.get('/vagueList', async (ctx) => {
+    logger.info(ctx.query);
     let name = ctx.query.name;
     let page = ctx.query.page || 1;
     let pageSize = ctx.query.pageSize || 10;
@@ -82,13 +84,4 @@ router.get('/vagueList', async (ctx) => {
         }
     }
 })
-
-router.get('/test', async (ctx) => {
-    ctx.body = {
-        success: false,
-        data: '22'
-    }
-})
-
-
 module.exports = router;
