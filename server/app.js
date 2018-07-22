@@ -2,6 +2,7 @@ const Koa = require('koa');
 const app = new Koa();
 const serve = require('koa-static');
 const koaNunjucks = require('koa-nunjucks-2');
+const bodyParser = require('koa-bodyparser');
 const path = require('path');
 const moment = require('moment');
 const logger = require('./service/loggerService')('app');
@@ -16,6 +17,7 @@ const utilService = require('./service/utilService');
 app.proxy = true;
 // middleware 公共资源
 app.use(serve(__dirname + '/public'));
+app.use(bodyParser());
 // middleware logger
 app.use(async (ctx, next) => {
     // server time

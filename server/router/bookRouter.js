@@ -18,7 +18,8 @@ router.get('/list', async (ctx) => {
     let query = age ? {
         age: {
             $regex: age
-        }
+        },
+        isSelled: 0
     } : {}
     try {
         let totalCount = await bookService.findBooks(query).count();
@@ -62,8 +63,38 @@ router.get('/vagueList', async (ctx) => {
     let name = ctx.query.name;
     let page = ctx.query.page || 1;
     let pageSize = ctx.query.pageSize || 10;
-    let query = {
-        name: {
+    let query = {};
+    if (name) {
+        query.name = {
+            $regex: name
+        }
+        query.isSelled = 0;
+    }
+    try {
+        let totalCount = await bookService.findBooks(query).count();
+        let books = await bookService.findBooks(query).skip((page - 1) * pageSize).limit(Number(pageSize));
+        ctx.body = {
+            success: true,
+            books: books,
+            totalCount: totalCount,
+            page: page,
+            pageSize: pageSize
+        }
+    } catch (err) {
+        ctx.body = {
+            success: false,
+            err: err.message
+        }
+    }
+})
+router.get('/allListByName', async (ctx) => {
+    logger.info(ctx.query);
+    let name = ctx.query.name;
+    let page = ctx.query.page || 1;
+    let pageSize = ctx.query.pageSize || 10;
+    let query = {};
+    if (name) {
+        query.name = {
             $regex: name
         }
     }
@@ -76,6 +107,51 @@ router.get('/vagueList', async (ctx) => {
             totalCount: totalCount,
             page: page,
             pageSize: pageSize
+        }
+    } catch (err) {
+        ctx.body = {
+            success: false,
+            err: err.message
+        }
+    }
+})
+router.post('/delete', async (ctx) => {
+    try {
+        let id = ctx.request.body.id;
+        if (id) {
+            let result = await bookService.deleteBook({
+                id: id
+            }, {
+                isSelled: 1
+            });
+            ctx.body = {
+                success: true,
+                book: result
+            }
+        } else {
+            throw new Error('参数不合法');
+        }
+    } catch (err) {
+        ctx.body = {
+            success: false,
+            err: err.message
+        }
+    }
+})
+
+router.post('/recover', async (ctx) => {
+    try {
+        let id = ctx.request.body.id;
+        if (id) {
+            let result = await bookService.updateBookById(id, {
+                isSelled: 0
+            });
+            ctx.body = {
+                success: true,
+                book: result
+            }
+        } else {
+            throw new Error('参数不合法');
         }
     } catch (err) {
         ctx.body = {
