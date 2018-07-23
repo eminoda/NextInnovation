@@ -33,7 +33,7 @@ module.exports = {
     //     }
     // ]
     uploadFile: async function (file, id) {
-        let fileName = file.originalFilename;
+        let fileName = file.originalFilename || file.name;
         let originPath = file.path;
         let destDir = path.resolve(__dirname, '/root/upload/' + id);
         logger.info(destDir);

@@ -170,21 +170,16 @@ router.post('/recover', async (ctx) => {
  */
 router.post('/upload', async (ctx) => {
     try {
-        // let id = ctx.request.body.id;
-        // if (!id) {
-        //     throw new Error('参数不正确');
-        // }
+        let id = ctx.request.body.id;
+        if (!id) {
+            throw new Error('参数不正确');
+        }
         // 构建表单
         let form = new multiparty.Form();
-        let picFile = await new Promise((resolve, reject) => {
-            form.parse(ctx.req, function (err, fields, files) {
-                if (err) reject(err);
-                resolve(files.pic[0]);
-            })
-        })
+        let picFile = ctx.request.files.pic;
         let file = await fileService.uploadFile(picFile, id);
         let book = await bookService.findBookById(id);
-        book.detailImageUrls.push('http://www.shidouhua.cn/' + file);
+        book.detailImageUrls.push('http://www.shidouhua.cn/' + id + '/' + file.fileName);
         let result = await bookService.updateBookById(id, book);
         ctx.body = {
             success: true,
@@ -202,7 +197,8 @@ router.post('/add', async (ctx) => {
     try {
         let bookDocument = {
             name: ctx.request.body.name || '',
-            desc: ctx.request.body.desc || ''
+            desc: ctx.request.body.desc || '',
+            isSelled: 0
         }
         book = await bookService.findBookByName(bookDocument.name);
         if (book) {
