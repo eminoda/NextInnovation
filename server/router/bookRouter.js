@@ -1,7 +1,10 @@
 const logger = require('../service/loggerService')('bookRouter');
 const bookService = require('../service/bookService');
+const fileService = require('../service/fileService');
 const Router = require('koa-router');
 const router = new Router();
+const multiparty = require('multiparty');
+
 router.prefix('/book');
 
 /**
@@ -152,6 +155,64 @@ router.post('/recover', async (ctx) => {
             }
         } else {
             throw new Error('参数不合法');
+        }
+    } catch (err) {
+        ctx.body = {
+            success: false,
+            err: err.message
+        }
+    }
+})
+
+/**
+ * 图片上传
+ * pic
+ */
+router.post('/upload', async (ctx) => {
+    try {
+        // let id = ctx.request.body.id;
+        // if (!id) {
+        //     throw new Error('参数不正确');
+        // }
+        // 构建表单
+        let form = new multiparty.Form();
+        let picFile = await new Promise((resolve, reject) => {
+            form.parse(ctx.req, function (err, fields, files) {
+                if (err) reject(err);
+                resolve(files.pic[0]);
+            })
+        })
+        let file = await fileService.uploadFile(picFile, id);
+        let book = await bookService.findBookById(id);
+        book.detailImageUrls.push('http://www.shidouhua.cn/' + file);
+        let result = await bookService.updateBookById(id, book);
+        ctx.body = {
+            success: true,
+            data: result
+        }
+    } catch (err) {
+        ctx.body = {
+            success: false,
+            err: err.message
+        }
+    }
+})
+
+router.post('/add', async (ctx) => {
+    try {
+        let bookDocument = {
+            name: ctx.request.body.name || '',
+            desc: ctx.request.body.desc || ''
+        }
+        book = await bookService.findBookByName(bookDocument.name);
+        if (book) {
+            throw new Error('书本已经存在');
+        } else {
+            book = await bookService.saveBook(bookDocument);
+            ctx.body = {
+                success: true,
+                data: book
+            }
         }
     } catch (err) {
         ctx.body = {

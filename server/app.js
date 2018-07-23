@@ -17,7 +17,10 @@ const utilService = require('./service/utilService');
 app.proxy = true;
 // middleware 公共资源
 app.use(serve(__dirname + '/public'));
-app.use(bodyParser());
+app.use(serve('/root/upload'));
+app.use(bodyParser({
+    multipart: true
+}));
 // middleware logger
 app.use(async (ctx, next) => {
     // server time
