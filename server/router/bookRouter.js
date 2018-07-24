@@ -23,7 +23,9 @@ router.get('/list', async (ctx) => {
             $regex: age
         },
         isSelled: 0
-    } : {}
+    } : {
+        isSelled: 0
+    }
     try {
         let totalCount = await bookService.findBooks(query).count();
         let books = await bookService.findBooks(query).skip((page - 1) * pageSize).limit(Number(pageSize));

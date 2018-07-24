@@ -12,6 +12,7 @@ const indexRouter = require('./router/indexRouter');
 const oauthRouter = require('./router/oauthRouter');
 const spiderRouter = require('./router/spiderRouter');
 const bookRouter = require('./router/bookRouter');
+const collectorRouter = require('./router/collectorRouter');
 const utilService = require('./service/utilService');
 
 app.proxy = true;
@@ -61,6 +62,7 @@ app.use(blogRouter.routes()).use(blogRouter.allowedMethods());
 app.use(oauthRouter.routes()).use(oauthRouter.allowedMethods());
 app.use(spiderRouter.routes()).use(spiderRouter.allowedMethods());
 app.use(bookRouter.routes()).use(bookRouter.allowedMethods());
+app.use(collectorRouter.routes()).use(collectorRouter.allowedMethods());
 
 // error-handling
 app.on('error', (err, ctx) => {
