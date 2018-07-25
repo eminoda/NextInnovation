@@ -9,7 +9,7 @@ const collectorService = {
             id: id
         });
     },
-    findBookByNickName: function (nickName) {
+    findCollectorByNickName: function (nickName) {
         return collectorDao.findOne({
             nickName: nickName
         });

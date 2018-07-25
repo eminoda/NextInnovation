@@ -11,7 +11,8 @@ module.exports = new mongoose.Schema({
     city: String,
     country: String,
     gender: Number,
-    province: String
+    province: String,
+    isAdmin: Number
 }, {
     collection: 'collector',
     id: true
