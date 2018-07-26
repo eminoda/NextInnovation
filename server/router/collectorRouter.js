@@ -17,7 +17,9 @@ router.get('/:id', async (ctx) => {
         if (!isExist) throw new Error('用户不存在');
         ctx.body = {
             success: true,
-            collector: isExist
+            data: {
+                collector: isExist
+            }
         }
     } catch (err) {
         ctx.body = {
@@ -37,7 +39,9 @@ router.get('/webcat/:nickName', async (ctx) => {
         let isExist = await collectorService.findCollectorByNickName(nickName);
         ctx.body = {
             success: true,
-            data: isExist
+            data: {
+                collector: isExist
+            }
         }
 
     } catch (err) {
@@ -72,7 +76,9 @@ router.post('/add', async (ctx) => {
         let result = await collectorService.saveCollector(collector);
         ctx.body = {
             success: true,
-            data: result
+            data: {
+                collector: result
+            }
         }
     } catch (err) {
         ctx.body = {
