@@ -37,6 +37,7 @@ router.get('/list', async (ctx) => {
             pageSize: pageSize
         }
     } catch (err) {
+        logger.error(err);
         ctx.body = {
             success: false,
             err: err.message
@@ -56,6 +57,7 @@ router.get('/detail/:id', async (ctx) => {
             book: book
         }
     } catch (err) {
+        logger.error(err);
         ctx.body = {
             success: false,
             err: err.message
@@ -86,6 +88,7 @@ router.get('/vagueList', async (ctx) => {
             pageSize: pageSize
         }
     } catch (err) {
+        logger.error(err);
         ctx.body = {
             success: false,
             err: err.message
@@ -114,6 +117,7 @@ router.get('/allListByName', async (ctx) => {
             pageSize: pageSize
         }
     } catch (err) {
+        logger.error(err);
         ctx.body = {
             success: false,
             err: err.message
@@ -137,6 +141,7 @@ router.post('/delete', async (ctx) => {
             throw new Error('参数不合法');
         }
     } catch (err) {
+        logger.error(err);
         ctx.body = {
             success: false,
             err: err.message
@@ -159,6 +164,7 @@ router.post('/recover', async (ctx) => {
             throw new Error('参数不合法');
         }
     } catch (err) {
+        logger.error(err);
         ctx.body = {
             success: false,
             err: err.message
@@ -188,6 +194,7 @@ router.post('/upload', async (ctx) => {
             data: result
         }
     } catch (err) {
+        logger.error(err);
         ctx.body = {
             success: false,
             err: err.message
@@ -213,6 +220,7 @@ router.post('/add', async (ctx) => {
             }
         }
     } catch (err) {
+        logger.error(err);
         ctx.body = {
             success: false,
             err: err.message

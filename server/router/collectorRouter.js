@@ -7,12 +7,19 @@ router.prefix('/collector');
 
 router.get('/list', async (ctx) => {
     try {
-        let collectors = await collectorService.findCollectors();
+        let query = {};
+        let page = ctx.query.page || 1;
+        let pageSize = ctx.query.pageSize || 10;
+        let totalCount = await collectorService.findCollectors(query).count();
+        let collectors = await collectorService.findCollectors(query).skip((page - 1) * pageSize).limit(Number(pageSize));
         logger.debug(collectors);
         ctx.body = {
             success: true,
             data: {
-                list: collectors
+                list: collectors,
+                totalCount: totalCount,
+                page: page,
+                pageSize: pageSize
             }
         }
     } catch (err) {
