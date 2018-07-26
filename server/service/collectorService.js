@@ -4,6 +4,9 @@ const collectorService = {
     saveCollector: function (collector) {
         return collectorDao.insert(collector);
     },
+    findCollectors: function () {
+        return collectorDao.find();
+    },
     findCollectorById: function (id) {
         return collectorDao.findOne({
             id: id
